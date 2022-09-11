@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="baseConf" status="off" monitorInterval="30">
+    <properties>
+        <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd'T'HH:mm:ss.SSS}][%maxLen{%level}{5}][%maxLen{%X{traceId}}{10}][%maxLen{%X{applicationId}}{20}][%maxLen{%c{1.}%X{methodName}}{50}][%maxLen{%X{applicationVersion}}{10}][%maxLen{%t}{20}][%maxLen{%X{internalUserId}}{15}][%maxLen{%X{businessKeys}}{100}]%maxLen{%m}{2000}%n"/>
+    </properties>
+    <Appenders>
+        <RollingRandomAccessFile name="File" fileName="logs/system.log"
+                                 filePattern="logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}.app-system.%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="false"/>
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <logger name="com" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </logger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>
